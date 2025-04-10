@@ -1,0 +1,49 @@
+<!-- Javascripts -->
+<script src="/assets-admin/plugins/jquery/jquery-3.4.1.min.js"></script>
+<script src="/assets-admin/plugins/bootstrap/popper.min.js"></script>
+<script src="/assets-admin/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets-admin/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/assets-admin/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+<script src="/assets-admin/plugins/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/assets-admin/plugins/blockui/jquery.blockUI.js"></script>
+<script src="/assets-admin/plugins/flot/jquery.flot.min.js"></script>
+<script src="/assets-admin/plugins/flot/jquery.flot.time.min.js"></script>
+<script src="/assets-admin/plugins/flot/jquery.flot.symbol.min.js"></script>
+<script src="/assets-admin/plugins/flot/jquery.flot.resize.min.js"></script>
+<script src="/assets-admin/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="/assets-admin/js/connect.min.js"></script>
+<script src="/assets-admin/js/pages/dashboard.js"></script>
+<script>
+    let currentDate = new Date().toJSON().slice(0, 10);
+    document.getElementById("date").innerHTML = currentDate;
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"
+    integrity="sha512-6F1RVfnxCprKJmfulcxxym1Dar5FsT/V2jiEUvABiaEiFWoQ8yHvqRM/Slf0qJKiwin6IDQucjXuolCfCKnaJQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $('#description').summernote({
+        placeholder: 'type here',
+        tabsize: 2,
+        height: 200,
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']]
+        ]
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myBtn").click(function () {
+            $("#myToast").toast("show");
+        });
+    });
+</script>
+</body>
+</html>

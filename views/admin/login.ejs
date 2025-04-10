@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BirthStory Admin Dashboard">
+    <meta name="keywords" content="admin,dashboard">
+    <meta name="developer" content="rabbitoxcommunity.com">
+    <!-- Title -->
+    <title>Birthstory - Admin Dashboard</title>
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
+    <link href="/assets-admin/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets-admin/plugins/font-awesome/css/all.min.css" rel="stylesheet">
+
+
+    <!-- Theme Styles -->
+    <link href="/assets-admin/css/birthstory.css" rel="stylesheet">
+    <link href="/assets-admin/css/dark_theme.css" rel="stylesheet">
+    <link href="/assets-admin/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
+<body class="auth-page sign-in">
+    <div class='loader'>
+        <div class='spinner-grow text-primary' role='status'>
+            <span class='sr-only'>Loading...</span>
+        </div>
+    </div>
+    <div class="connect-container align-content-stretch d-flex flex-wrap">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="auth-form">
+                        <div class="row">
+                            <div class="col">
+                                <div class="logo-box"><a href="#" class="logo-text">
+                                        <img src="/assets-admin/img/logo.svg" alt="">
+                                    </a></div>
+                                <form id="loginForm">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="username" id="username"
+                                            aria-describedby="emailHelp" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="Password">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block btn-submit">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Javascripts -->
+
+    <script src="/assets-admin/plugins/jquery/jquery-3.4.1.min.js"></script>
+    <script src="/assets-admin/plugins/bootstrap/popper.min.js"></script>
+    <script src="/assets-admin/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets-admin/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/assets-admin/js/connect.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Send data to backend
+            fetch('/api/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Login failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    Toastify({
+                        text: "Login Successfully",
+                        duration: 2000,
+                        destination: '/manage-blog',
+                        newWindow: true,
+                        close: true,
+                        position: "center",
+                            gravity: "bottom", 
+                        backgroundColor: "#61d39f",
+                    }).showToast();
+                    // Assuming the token is in data.token, adjust as needed based on your API response structure
+                    const token = data.token;
+                    if (token) {
+                        // Set the token as a cookie
+                        document.cookie = `x-auth-token=${token}; path=/; max-age=3600; SameSite=Strict`;
+                        // Redirect to dashboard or reload page
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1000);
+
+                    } else {
+                        alert('Token not received');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    Toastify({
+                        text: "Please check your username or password ",
+                        duration: 3000,
+                        destination: '/manage-blog',
+                        newWindow: true,
+                        close: true,
+                        position: "center",
+                            gravity: "bottom", 
+                        backgroundColor: "#dc3545",
+                    }).showToast();
+                });
+        });
+    </script>
+
+</body>
+
+</html>

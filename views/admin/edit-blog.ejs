@@ -1,0 +1,125 @@
+<%- include('./partials/header') %>
+
+    <body>
+
+        <div class='loader'>
+            <div class='spinner-grow text-primary' role='status'>
+                <span class='sr-only'>Loading...</span>
+            </div>
+        </div>
+        <div class="connect-container align-content-stretch d-flex flex-wrap">
+            <div class="page-sidebar">
+                <div class="logo-box">
+                    <a href="#" class="logo-text"><img src="/assets/img/logo.svg" alt=""></a>
+                    <a href="#" id="sidebar-close"><i class="material-icons">close</i></a>
+                    <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i
+                            class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a>
+                </div>
+                <%- include('partials/sidebar') %>
+            </div>
+            <div class="page-container">
+
+                <%- include('partials/pageheader') %>
+
+                    <div class="page-content">
+                        <div class="page-info">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Blog</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="main-wrapper">
+                            <div class="row">
+                                <div class="col-xl">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Edit Blog</h5>
+                                            <form id="editBlogForm">
+                                                <input type="hidden" name="blogId" value="<%= blog._id %>">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12">
+                                                        <label>Blog Title</label>
+                                                        <input type="text" class="form-control" name="title" id="title"
+                                                            value="<%= blog.title %>" placeholder="Course Name">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Blog Author Name</label>
+                                                        <input type="text" value="<%= blog.author %>"
+                                                            class="form-control" name="author" id="author"
+                                                            placeholder="Course Name">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="image">Blog Image</label>
+                                                        <input type="file" name="image" class="form-control" id="image"
+                                                            placeholder="Password">
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="Description">Short description (Home page)</label>
+                                                        <textarea class="form-control" name="short_description"
+                                                            id="short_description"
+                                                            rows="2"><%= blog.short_description %></textarea>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label for="Description">Long description (Detail page)</label>
+                                                        <textarea class="form-control" name="description"
+                                                            id="description" rows="2"><%= blog.description %></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                    <button type="submit" class="btn btn-danger ml-3">cancel</button>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <%- include('./partials/footer') %>
+
+            <script>
+                document.getElementById('editBlogForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const blogId = formData.get('blogId');
+
+                    fetch(`/api/blogs/${blogId}`, {
+                        method: 'PUT',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Toastify({
+                                    text: "Blog Updated Successfully",
+                                    duration: 1000,
+                                    destination: '/manage-blog',
+                                    newWindow: true,
+                                    close: true,
+                                    position: "center",
+                                    gravity: "bottom",
+                                    positionRight: true,
+                                    backgroundColor: "#61d39f"
+                                }).showToast();
+                                setTimeout(() => {
+                                    window.location.href = '/manage-blog';
+                                }, 1000);
+                            } else {
+                                alert('Error updating blog: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the blog.');
+                        });
+                });
+            </script>

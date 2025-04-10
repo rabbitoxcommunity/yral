@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+    <body>
+        <div class='loader'>
+            <div class='spinner-grow text-primary' role='status'>
+                <span class='sr-only'>Loading...</span>
+            </div>
+        </div>
+        <div class="connect-container align-content-stretch d-flex flex-wrap">
+            <div class="page-sidebar">
+                <div class="logo-box">
+                    <a href="#" class="logo-text"><img src="/assets/img/logo.svg" alt=""></a>
+                    <a href="#" id="sidebar-close"><i class="material-icons">close</i></a>
+                    <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a>
+                </div>
+              
+                <%- include('partials/sidebar') %>
+
+            </div>
+            <div class="page-container">
+                
+                <%- include('partials/pageheader') %>
+
+                <div class="page-content">
+                    <div class="page-info">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Admin Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="main-wrapper">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card savings-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Blogs</h5>
+                                        <div class="savings-stats">
+                                            <h5><%= blogs?.length %></h5>
+                                            <span>Total blogs listed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card savings-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total Appointments</h5>
+                                        <div class="savings-stats">
+                                            <h5><%= appointments?.length == undefined ? 0 : appointments?.length %></h5>
+                                            <span>Total Appointments</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <%- include('partials/footer') %>

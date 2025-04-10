@@ -1,0 +1,12 @@
+.dynamic__table .table td, .table th {
+    padding: 15px 15px;
+    border: none;
+    padding-left: 0;
+}
+.btn-action{
+    padding: 7px 9px;
+}
+.btn-action img{
+    width: 20px;
+    height: 20px;
+}
