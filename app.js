@@ -3,15 +3,17 @@ const express = require('express');
 const path = require('path');
 const connectDB = require('./config/database');
 const adminRoutes = require('./routes/adminRoutes');
-const blogRoutes = require('./routes/blogRoutes');
+const productRoutes = require('./routes/productRoutes');
 const formRoutes = require('./routes/formRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 const cookieParser = require('cookie-parser');
 
 
-const blogController = require('./controllers/blogController');
+const productController = require('./controllers/productController');
 const formController = require('./controllers/formController');
+const categoryController = require('./controllers/categoryController');
 const auth = require('./middleware/auth');
-const Blog = require('./models/Blog');
+const Product = require('./models/Product');
 
 const app = express();
 
@@ -31,8 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/api/admin', adminRoutes);
-app.use('/api/blogs', blogRoutes);
+app.use('/api/product', productRoutes);
 app.use('/api/form', formRoutes);
+app.use('/api/category', categoryRoutes);
+
+app.locals.IMAGE_URL = process.env.IMAGE_URL;
+
 
 // Add a route for your main page
 app.get('/', (req, res) => {
@@ -47,25 +53,33 @@ app.get('/contact', (req, res) => {
   res.render('frontend/contact');
 });
 
-
-
 app.get('/products', async (req, res) => {
   try {
-    // Fetch the featured blog and the list of other blogs
-    const { featured, list } = await blogController.getAllBlogs();
+    const selectedCategory = req.query.category;
 
-    // Render the EJS template with the featured blog and list
+    // Get all categories
+    const categories = await categoryController.getAllCategories();
+
+    // Get products based on selected category
+    let products;
+    if (selectedCategory) {
+      products = await Product.find({ category: selectedCategory }).sort({ date: -1 });
+    } else {
+      products = await productController.getAllProducts();
+    }
+
+    // Render the page
     res.render('frontend/products', {
       title: "Our Products",
-      featured, // Pass the featured blog separately
-      blogs: list // Pass the rest as the list of blogs
+      products,
+      categories,
+      selectedCategory,
     });
   } catch (error) {
-    console.error('Error fetching blogs:', error);
-    res.status(500).render('error', { message: 'Error fetching blogs' });
+    console.error('Error fetching products:', error);
+    res.status(500).render('error', { message: 'Error fetching products' });
   }
 });
-
 
 
 
@@ -81,7 +95,7 @@ app.get('/admin/login', (req, res) => {
 app.get('/dashboard', auth, async (req, res) => {
   try {
     // Fetch the featured blog and the list of other blogs
-    const { list = [], featured = null } = await blogController.getAllBlogs();
+    const { list = [], featured = null } = await productController?.getAllProducts();
 
     // Filter out null or undefined blogs
     const includeFeatured = [featured, ...list].filter(blog => blog !== null && blog !== undefined);
@@ -89,11 +103,9 @@ app.get('/dashboard', auth, async (req, res) => {
     // Fetch appointments and ensure you're accessing the appointments array correctly
     const result = await formController.getForm();
 
-    // Log the full result to inspect the structure
-    console.log('Form result:', result);
 
     const appointments = result?.appointments || [];  // Access the appointments array from the returned object
-    
+
     // Log the appointments array
     console.log(`Appointments array:`, appointments);
 
@@ -103,31 +115,64 @@ app.get('/dashboard', auth, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching blogs or appointments:', error);
+    console.error('Error fetching products or appointments:', error);
     res.status(500).render('error', { message: 'Error fetching data' });
   }
 });
 
 
 
+app.get('/category', auth, async (req, res) => {
+  try {
+    const response = await categoryController.getAllCategories();
 
-app.get('/add-blog',auth, (req, res) => {
-  res.render('admin/add-blog');
+    console.log(response)
+
+    // Filter out null or undefined blogs
+    res.render('admin/category', {
+      categories: response
+    });
+
+  } catch (error) {
+    console.error('Error fetching Categories:', error);
+    res.status(500).render('error', { message: 'Error fetching blogs' });
+  }
 });
 
-app.get('/blog/edit/:id', auth, async (req, res) => {
+
+
+
+app.get('/add-product', auth, async (req, res) => {
+  try {
+    const response = await categoryController.getAllCategories();
+
+    // Filter out null or undefined blogs
+    console.log(response, 'response')
+    res.render('admin/add-product', {
+      categories: response
+    });
+
+  } catch (error) {
+    console.error('Error fetching Categories:', error);
+    res.status(500).render('error', { message: 'Error fetching blogs' });
+  }
+});
+
+app.get('/product/edit/:id', auth, async (req, res) => {
   try {
     const blogId = req.params.id;
-    console.log('Blog ID:', blogId);
-    const blog = await Blog.findById(blogId); // Fetch the blog by ID
+    console.log('Product ID:', blogId);
+    const blog = await Product.findById(blogId);
+    const response = await categoryController.getAllCategories();
+
 
     if (!blog) {
       // If no blog is found, send a 404 response
-      return res.status(404).json({ message: 'Blog not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
 
     // Render the edit page and pass the blog data
-    res.render('admin/edit-blog', { blog });
+    res.render('admin/edit-product', { blog: blog, categories: response });
   } catch (error) {
     console.error('Error fetching blog:', error);
     res.status(500).json({ message: 'Error fetching blog' });
@@ -137,15 +182,12 @@ app.get('/blog/edit/:id', auth, async (req, res) => {
 
 
 
-app.get('/manage-blog',auth, async (req, res) => {
+app.get('/manage-product', auth, async (req, res) => {
   try {
-    const { list = [], featured = null } = await blogController.getAllBlogs();
+    const products = await productController.getAllProducts();
 
-    // Filter out null or undefined blogs
-    const includeFeatured = [featured, ...list].filter(blog => blog !== null && blog !== undefined);
-
-    res.render('admin/manage-blog', {
-      blogs: includeFeatured
+    res.render('admin/manage-products', {
+      products
     });
 
   } catch (error) {
@@ -154,7 +196,7 @@ app.get('/manage-blog',auth, async (req, res) => {
   }
 });
 
-app.get('/appointments',auth, async (req, res) => {
+app.get('/appointments', auth, async (req, res) => {
   try {
     // Fetch the featured blog and the list of other blogs
     const appointments = await formController.getForm();

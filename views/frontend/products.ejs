@@ -1,261 +1,231 @@
 <%- include('partials/header') %>
-<!-- Title Bar -->
-<div class="pbmit-title-bar-wrapper">
-    <div class="container">
-        <div class="pbmit-title-bar-content">
-            <div class="pbmit-title-bar-content-inner">
-                <div class="pbmit-tbar">
-                    <div class="pbmit-tbar-inner container">
-                        <h1 class="pbmit-tbar-title"> Our Products</h1>
+    <!-- Title Bar -->
+    <div class="pbmit-title-bar-wrapper">
+        <div class="container">
+            <div class="pbmit-title-bar-content">
+                <div class="pbmit-title-bar-content-inner">
+                    <div class="pbmit-tbar">
+                        <div class="pbmit-tbar-inner container">
+                            <h1 class="pbmit-tbar-title"> Our Products</h1>
+                        </div>
                     </div>
-                </div>
-                <div class="pbmit-breadcrumb">
-                    <div class="pbmit-breadcrumb-inner">
-                        <span>
-                            <a title="" href="#" class="home"><span>Yral Concepts</span></a>
-                        </span>
-                        <span class="sep">
-                            <i class="pbmit-base-icon-angle-right"></i>
-                        </span>
-                        <span>
-                            <a title="" href="#" class="home"><span>Products</span></a>
-                        </span>
+                    <div class="pbmit-breadcrumb">
+                        <div class="pbmit-breadcrumb-inner">
+                            <span>
+                                <a title="" href="#" class="home"><span>Yral Concepts</span></a>
+                            </span>
+                            <span class="sep">
+                                <i class="pbmit-base-icon-angle-right"></i>
+                            </span>
+                            <span>
+                                <a title="" href="#" class="home"><span>Products</span></a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Title Bar End-->
-<section class="site-content service-details">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-xl-9 service-left-col">
-                <div class="container">
-                    <div class="pbmit-element-posts-wrapper row">
-                        <article class="pbmit-service-style-1 col-md-4">
-                            <div class="pbminfotech-post-item">
-                                <div class="pbmit-box-content-wrap">
-                                    <div class="pbmit-service-image-wrapper">
-                                        <div class="pbmit-featured-img-wrapper">
-                                            <div class="pbmit-featured-wrapper">
-                                                <img src="/images/HYGIA2.png" class="img-fluid" alt="">
+    <!-- Title Bar End-->
+    <section class="site-content service-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-xl-9 service-left-col">
+                    <div class="container">
+                        <div class="pbmit-element-posts-wrapper row">
+                            <% if (products && products.length) { %>
+                                <% products.forEach(function(product) { %>
+                                    <article class="pbmit-service-style-1 col-md-4">
+                                        <div class="pbminfotech-post-item">
+                                            <div class="pbmit-box-content-wrap">
+                                                <div class="pbmit-service-image-wrapper">
+                                                    <div class="pbmit-featured-img-wrapper">
+                                                        <div class="pbmit-featured-wrapper">
+                                                            <img src="<%= product?.image %>" class="img-fluid" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pbmit-content-box">
+                                                    <h3 class="pbmit-service-title">
+                                                        <%= product.title %>
+                                                    </h3>
+                                                    <div class="buy__now">
+                                                        <div class="pbmit-button transform-bottom transform-delay-4">
+                                                            <a class="pbmit-btn pbmit-btn-global" target="_blank"
+                                                                href="https://wa.me/7034327244?text=*PRODUCT%20ENQUIRY*%0A---------------------------%0AProduct%20Name%20:%20<%= encodeURIComponent(product.title) %>%0AQuantity%20:%20222%0AImage%20URL:%20<%= encodeURIComponent(IMAGE_URL+ product.image) %>">
+                                                                <span class="pbmit-button-content-wrapper">
+                                                                    <span class="pbmit-button-icon">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="22.76" height="22.76"
+                                                                            viewBox="0 0 22.76 22.76">
+                                                                            <title>black-arrow</title>
+                                                                            <path
+                                                                                d="M22.34,1A14.67,14.67,0,0,1,12,5.3,14.6,14.6,0,0,1,6.08,4.06,14.68,14.68,0,0,1,1.59,1"
+                                                                                transform="translate(-0.29 -0.29)"
+                                                                                fill="none" stroke="#000"
+                                                                                stroke-width="2"></path>
+                                                                            </path>
+                                                                            <path d="M22.34,1a14.67,14.67,0,0,0,0,20.75"
+                                                                                transform="translate(-0.29 -0.29)"
+                                                                                fill="none" stroke="#000"
+                                                                                stroke-width="2">
+                                                                            </path>
+                                                                            <path d="M22.34,1,1,22.34"
+                                                                                transform="translate(-0.29 -0.29)"
+                                                                                fill="none" stroke="#000"
+                                                                                stroke-width="2">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </span>
+                                                                    <span class="pbmit-button-text">Buy Now</span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="counter">
+                                                            <button id="decrease" disabled><i
+                                                                    class="pbmit-base-icon-angle-left"></i></button>
+                                                            <span id="count">1</span>
+                                                            <button id="increase"><i
+                                                                    class="pbmit-base-icon-angle-right"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="pbmit-content-box">
-                                        <div class="pbminfotech-box-number">01</div>
-                                        <div class="pbmit-serv-cat">
-                                            <a href="services.html" rel="tag">Air Freshener</a>
-                                        </div>
-                                        <h3 class="pbmit-service-title">
-                                            <a href="service-details.html">Hygia Dispenser</a>
-                                        </h3>
-                                        <div class="buy__now">
-                                            <div class="pbmit-button transform-bottom transform-delay-4">
-                                                <a class="pbmit-btn pbmit-btn-global" target="_blank"
-                                                    href="https://wa.me/7034327244?text=*PRODUCT%20ENQUIRY*%0A---------------------------%0AProduct%20Name%20:%20Hygia%20Dispenser%0AQuantity%20:%2010%0AImage%20URL:%20https://placehold.co/600x400">
-                                                    <span class="pbmit-button-content-wrapper">
-                                                        <span class="pbmit-button-icon">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="22.76"
-                                                                height="22.76" viewBox="0 0 22.76 22.76">
-                                                                <title>black-arrow</title>
-                                                                <path
-                                                                    d="M22.34,1A14.67,14.67,0,0,1,12,5.3,14.6,14.6,0,0,1,6.08,4.06,14.68,14.68,0,0,1,1.59,1"
-                                                                    transform="translate(-0.29 -0.29)" fill="none"
-                                                                    stroke="#000" stroke-width="2"></path>
-                                                                <path d="M22.34,1a14.67,14.67,0,0,0,0,20.75"
-                                                                    transform="translate(-0.29 -0.29)" fill="none"
-                                                                    stroke="#000" stroke-width="2"></path>
-                                                                <path d="M22.34,1,1,22.34"
-                                                                    transform="translate(-0.29 -0.29)" fill="none"
-                                                                    stroke="#000" stroke-width="2"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span class="pbmit-button-text">Buy Now</span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div class="counter">
-                                                <button id="decrease" disabled><i
-                                                        class="pbmit-base-icon-angle-left"></i></button>
-                                                <span id="count">1</span>
-                                                <button id="increase"><i
-                                                        class="pbmit-base-icon-angle-right"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- <article class="pbmit-service-style-1 col-md-4">
-                            <div class="pbminfotech-post-item">
-                                <div class="pbmit-box-content-wrap">
-                                    <div class="pbmit-service-image-wrapper">
-                                        <div class="pbmit-featured-img-wrapper">
-                                            <div class="pbmit-featured-wrapper">
-                                                <img src="https://xclean-demo.pbminfotech.com/html-demo/images/service/service-07.jpg" class="img-fluid" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="pbmit-service-btn-wrapper">
-                                            <a class="pbmit-service-btn" href="service-details.html"
-                                                title="Carpet Cleaning">
-                                                <span class="pbmit-button-icon">
-                                                    <i class="pbmit-base-icon-angle-right"></i>
-                                                </span>
-                                            </a>
-                                        </div>
-                                        <a class="pbmit-link" href="service-details.html"></a>
-                                    </div>
-                                    <div class="pbmit-content-box">
-                                        <div class="pbminfotech-box-number">07</div>
-                                        <div class="pbmit-serv-cat">
-                                            <a href="services.html" rel="tag">Vacuum</a>
-                                        </div>
-                                        <h3 class="pbmit-service-title">
-                                            <a href="service-details.html">Carpet Cleaning</a>
-                                        </h3>
-                                        <div class="pbmit-service-description">
-                                            <p>We provide you the best service quality with best matter you’re
-                                                looking for residential or commercial cleaning services</p>
-                                        </div>
-                                        <div class="pbmit-service-icon">
-                                            <i class="pbmit-xclean-icon pbmit-xclean-icon-store"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article> -->
-
+                                    </article>
+                                    <% }) %>
+                                        <% } %>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-xl-3 service-right-col sidebar">
-                <aside class="service-sidebar">
-                    <aside class="widget post-list">
-                        <h2 class="widget-title">Categories</h2>
-                        <div class="all-post-list">
-                            <ul>
-                                <!-- <li class="post-active"><a href="#">Dispensers </a></li> -->
-                                <li><a href="#">Dispensers</a></li>
-                                <li><a href="#">Bins & Trollys</a></li>
-                                <li><a href="#">Cleaning Tools</a></li>
-                                <li><a href="#">Disposables</a></li>
-                                <li><a href="#">Cleaning Liquids</a></li>
-                                <li><a href="#">Tissues & rolls</a></li>
-                                <li><a href="#">Bowls & Plates</a></li>
-                            </ul>
-                        </div>
-                    </aside>
-                    <aside class="widget post-list">
+                <div class="col-md-12 col-xl-3 service-right-col sidebar">
+                    <aside class="service-sidebar">
+                        <aside class="widget post-list">
+                            <h2 class="widget-title">Categories</h2>
+                            <div class="all-post-list">
+                                <ul>
+                                    <li class="<%= !selectedCategory ? 'post-active' : '' %>">
+                                        <a href="/products">All</a>
+                                    </li>
+                                    <% categories.forEach(function(cat) { %>
+                                        <li class="<%= selectedCategory === cat.title ? 'post-active' : '' %>">
+                                            <a href="/products?category=<%= encodeURIComponent(cat.title) %>">
+                                                <%= cat.title %>
+                                            </a>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </div>
+                        </aside>
+                        <!-- <aside class="widget post-list">
                         <h2 class="widget-title">Brands</h2>
                         <div class="all-post-list">
                             <ul>
-                                <!-- <li class="post-active"><a href="#">Dispensers </a></li> -->
                                 <li><a href="#">Hygia</a></li>
                                 <li><a href="#">Bio Solve</a></li>
                                 <li><a href="#">Ekota</a></li>
                                 <li><a href="#">Izzah</a></li>
                             </ul>
                         </div>
-                    </aside>
-                    <aside class="widget pbmit-service-ad">
-                        <div class="textwidget">
-                            <div class="pbmit-service-ads">
-                                <div class="pbmit-ads-call">Call 123 234-567-890</div>
-                                <h4 class="pbmit-ads-subtitle">We Provide</h4>
-                                <h3 class="pbmit-ads-title">Best Services</h3>
-                                <a class="pbmit-btn pbmit-btn-global" href="#">
-                                    <span class="pbmit-button-content-wrapper">
-                                        <span class="pbmit-button-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="22.76" height="22.76"
-                                                viewBox="0 0 22.76 22.76">
-                                                <title>black-arrow</title>
-                                                <path
-                                                    d="M22.34,1A14.67,14.67,0,0,1,12,5.3,14.6,14.6,0,0,1,6.08,4.06,14.68,14.68,0,0,1,1.59,1"
-                                                    transform="translate(-0.29 -0.29)" fill="none" stroke="#000"
-                                                    stroke-width="2"></path>
-                                                <path d="M22.34,1a14.67,14.67,0,0,0,0,20.75"
-                                                    transform="translate(-0.29 -0.29)" fill="none" stroke="#000"
-                                                    stroke-width="2"></path>
-                                                <path d="M22.34,1,1,22.34" transform="translate(-0.29 -0.29)"
-                                                    fill="none" stroke="#000" stroke-width="2"></path>
-                                            </svg>
+                    </aside> -->
+                        <aside class="widget pbmit-service-ad">
+                            <div class="textwidget">
+                                <div class="pbmit-service-ads">
+                                    <div class="pbmit-ads-call">Call 123 234-567-890</div>
+                                    <h4 class="pbmit-ads-subtitle">We Provide</h4>
+                                    <h3 class="pbmit-ads-title">Best Services</h3>
+                                    <a class="pbmit-btn pbmit-btn-global" href="#">
+                                        <span class="pbmit-button-content-wrapper">
+                                            <span class="pbmit-button-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22.76" height="22.76"
+                                                    viewBox="0 0 22.76 22.76">
+                                                    <title>black-arrow</title>
+                                                    <path
+                                                        d="M22.34,1A14.67,14.67,0,0,1,12,5.3,14.6,14.6,0,0,1,6.08,4.06,14.68,14.68,0,0,1,1.59,1"
+                                                        transform="translate(-0.29 -0.29)" fill="none" stroke="#000"
+                                                        stroke-width="2"></path>
+                                                    <path d="M22.34,1a14.67,14.67,0,0,0,0,20.75"
+                                                        transform="translate(-0.29 -0.29)" fill="none" stroke="#000"
+                                                        stroke-width="2"></path>
+                                                    <path d="M22.34,1,1,22.34" transform="translate(-0.29 -0.29)"
+                                                        fill="none" stroke="#000" stroke-width="2"></path>
+                                                </svg>
+                                            </span>
+                                            <span class="pbmit-button-text">Contact us Now</span>
                                         </span>
-                                        <span class="pbmit-button-text">Contact us Now</span>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </aside>
-                    <aside class="widget pbmit-download-info">
-                        <h2 class="widget-title">Company profile</h2>
-                        <div class="textwidget">
-                            <div class="pbmit-download">
-                                <div class="pbmit-item-download">
-                                    <a href="#" target="_blank" rel="noopener">
-                                        <div class="pbmit-download-content">
-                                            <div class="pbmit-download-wrap">
-                                                <i class="pbmit-base-icon-pdf"></i>
-                                                <div class="pbmit-title-wrap">
-                                                    <h3 class="pbmit-download-title">Document of Business</h3>
-                                                    <span>Brouchers</span>
-                                                </div>
-                                            </div>
-                                            <span class="pbmit-download-item">
-                                                <i
-                                                    class="pbminfotech-base-icons pbmit-righticon pbmit-base-icon-download"></i>
-                                            </span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="pbmit-item-download">
-                                    <a href="#" target="_blank" rel="noopener">
-                                        <div class="pbmit-download-content">
-                                            <div class="pbmit-download-wrap">
-                                                <i class="pbmit-base-icon-file"></i>
-                                                <div class="pbmit-title-wrap">
-                                                    <h3 class="pbmit-download-title">Download Word File</h3>
-                                                    <span>Brouchers</span>
-                                                </div>
-                                            </div>
-                                            <span class="pbmit-download-item">
-                                                <i
-                                                    class="pbminfotech-base-icons pbmit-righticon pbmit-base-icon-download"></i>
-                                            </span>
-                                        </div>
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </aside>
+                        <aside class="widget pbmit-download-info">
+                            <h2 class="widget-title">Company profile</h2>
+                            <div class="textwidget">
+                                <div class="pbmit-download">
+                                    <div class="pbmit-item-download">
+                                        <a href="#" target="_blank" rel="noopener">
+                                            <div class="pbmit-download-content">
+                                                <div class="pbmit-download-wrap">
+                                                    <i class="pbmit-base-icon-pdf"></i>
+                                                    <div class="pbmit-title-wrap">
+                                                        <h3 class="pbmit-download-title">Document of Business</h3>
+                                                        <span>Brouchers</span>
+                                                    </div>
+                                                </div>
+                                                <span class="pbmit-download-item">
+                                                    <i
+                                                        class="pbminfotech-base-icons pbmit-righticon pbmit-base-icon-download"></i>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="pbmit-item-download">
+                                        <a href="#" target="_blank" rel="noopener">
+                                            <div class="pbmit-download-content">
+                                                <div class="pbmit-download-wrap">
+                                                    <i class="pbmit-base-icon-file"></i>
+                                                    <div class="pbmit-title-wrap">
+                                                        <h3 class="pbmit-download-title">Download Word File</h3>
+                                                        <span>Brouchers</span>
+                                                    </div>
+                                                </div>
+                                                <span class="pbmit-download-item">
+                                                    <i
+                                                        class="pbminfotech-base-icons pbmit-righticon pbmit-base-icon-download"></i>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
                     </aside>
-                </aside>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script>
-    const decreaseBtn = document.getElementById("decrease");
-    const increaseBtn = document.getElementById("increase");
-    const countDisplay = document.getElementById("count");
+    <script>
+        const decreaseBtn = document.getElementById("decrease");
+        const increaseBtn = document.getElementById("increase");
+        const countDisplay = document.getElementById("count");
 
-    let count = 1; // Initial value set to 1
+        let count = 1; // Initial value set to 1
 
-    increaseBtn.addEventListener("click", () => {
-        count++;
-        countDisplay.textContent = count;
-        decreaseBtn.disabled = count === 1; // Disable only when count is 1
-    });
-
-    decreaseBtn.addEventListener("click", () => {
-        if (count > 1) { // Prevent going below 1
-            count--;
+        increaseBtn.addEventListener("click", () => {
+            count++;
             countDisplay.textContent = count;
-            decreaseBtn.disabled = count === 1;
-        }
-    });
-</script>
+            decreaseBtn.disabled = count === 1; // Disable only when count is 1
+        });
 
-<%- include('partials/footer') %>
+        decreaseBtn.addEventListener("click", () => {
+            if (count > 1) { // Prevent going below 1
+                count--;
+                countDisplay.textContent = count;
+                decreaseBtn.disabled = count === 1;
+            }
+        });
+
+        console.log(count,'count')
+    </script>
+
+    <%- include('partials/footer') %>

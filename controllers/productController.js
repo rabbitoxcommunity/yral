@@ -1,10 +1,13 @@
-const Blog = require('../models/Blog');
+const Category = require('../models/Category');
+const Product = require('../models/Product');
 
 
 
-exports.createBlog = async (req, res) => {
+exports.createProduct = async (req, res) => {
   try {
-    const { title, short_description, description, author } = req.body;
+    const { title, category } = req.body;
+
+    console.log(req?.file,'test')
 
     // Check if the image file was uploaded
     if (!req.file) {
@@ -14,25 +17,25 @@ exports.createBlog = async (req, res) => {
     // Remove the 'public/' prefix from the image path
     const image = req.file.path.replace(/^public\//, '');
 
-    const newBlog = new Blog({ title, description,short_description, author, image });
+    const newBlog = new Product({ title, category, image });
     await newBlog.save();
 
     res.status(201).json(newBlog);
   } catch (error) {
-    console.error('Error creating blog:', error);
-    res.status(500).json({ message: 'Error creating blog', error });
+    console.error('Error creating Product:', error);
+    res.status(500).json({ message: 'Error creating Product', error });
   }
 };
 
-exports.editBlog = async (req, res) => {
+exports.editProduct = async (req, res) => {
   try {
-    const { id } = req.params; // Blog ID from URL
-    const { title, short_description, description, author } = req.body;
+    const { id } = req.params; // Product ID from URL
+    const { title, category } = req.body;
 
     // Find the blog by ID
-    const blog = await Blog.findById(id);
+    const blog = await Product.findById(id);
     if (!blog) {
-      return res.status(404).json({ message: 'Blog not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
 
     // Check if a new image file was uploaded
@@ -43,9 +46,7 @@ exports.editBlog = async (req, res) => {
 
     // Update the blog fields
     blog.title = title || blog.title;
-    blog.short_description = short_description || blog.short_description;
-    blog.description = description || blog.description;
-    blog.author = author || blog.author;
+    blog.category = category || blog.category;
     blog.image = updatedImage;
 
     // Save the updated blog
@@ -59,31 +60,43 @@ exports.editBlog = async (req, res) => {
 };
 
 
-exports.getAllBlogs = async () => {
+exports.getAllProducts = async () => {
   try {
     // Fetch blogs sorted by creation date (newest first)
-    const blogs = await Blog.find().sort({ date: -1 });
+    const products = await Product.find().sort({ date: -1 });
 
-    if (blogs.length === 0) {
-      return { featured: null, list: [] }; // No blogs found
+    if (products.length === 0) {
+      return false;
     }
 
-    // Separate the first blog as featured and the rest as the list
-    const featured = blogs[0];
-    const list = blogs.slice(1);
+    console.log(products)
 
-    return { featured, list };
+    return products;
   } catch (error) {
     console.error('Error fetching blogs:', error);
     throw error; // Rethrow the error to be handled by the calling function
   }
 };
 
+exports.getProductsByCategory = async (req, res) => {
+  try {
+    const category = req.params.category;
+    const products = await Product.find({ category }).sort({ date: -1 });
+
+    console.log(category,'category')
+
+    res.render('products', { products, selectedCategory: category });
+  } catch (error) {
+    console.error('Error fetching category products:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 // Fetch blog by ID
-exports.getBlogById = async (blogId) => {
+exports.getProductById = async (blogId) => {
   try {
     // Find blog by ID
-    const blog = await Blog.findById(blogId);
+    const blog = await Product.findById(blogId);
 
     // If no blog is found, return null
     if (!blog) {
@@ -98,18 +111,18 @@ exports.getBlogById = async (blogId) => {
   }
 };
 
-exports.deleteBlog = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
     // Find and delete the form by its id
-    const deletedBlog= await Blog.findByIdAndDelete(id);
+    const deletedBlog= await Product.findByIdAndDelete(id);
 
     if (!deletedBlog) {
-      return res.status(404).json({ message: 'Blog not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
 
-    return res.status(200).json({ message: 'Blog deleted successfully', form: deletedBlog });
+    return res.status(200).json({ message: 'Product deleted successfully', form: deletedBlog });
   } catch (error) {
     console.error('Error deleting form:', error);
     return res.status(500).json({ message: 'Server error while deleting form' });
