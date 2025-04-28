@@ -1591,6 +1591,10 @@ body {
         font-size: 30px;
         line-height: 40px;
     }
+	.service-details > .container > .row {
+		-ms-flex-direction: column-reverse !important;
+		flex-direction: column-reverse;
+	}
 	/*=== Homepage-01 ===*/
 	.contact-one-bg .pbmit-appointment-form-inner{
 		padding: 30px 30px 80px 30px;

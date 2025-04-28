@@ -2,8 +2,10 @@ const Form = require('../models/Form');
 
 exports.submitForm = async (req, res) => {
   try {
-    const { firstName, lastName, email, phoneNumber, service, stage } = req.body;
-    const newForm = new Form({ firstName, lastName, email, phoneNumber, service, stage });
+
+    console.log(req.body)
+    const { firstname, lastname, email, phoneNumber, category, quantity } = req.body;
+    const newForm = new Form({ firstname, lastname, email, phoneNumber, category, quantity });
     await newForm.save();
     res.status(201).json({ message: 'Form submitted successfully' });
   } catch (error) {

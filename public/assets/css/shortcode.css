@@ -897,6 +897,7 @@ blockquote,
 	padding: 65px 40px 40px 40px;
 	border: 1px solid #e5e5e5;
 	border-radius: 30px;
+	min-height: 320px;
 }
 .pbmit-ihbox-style-10 .pbmit-ihbox-contents {
 	margin-bottom: 30px;
@@ -3462,6 +3463,16 @@ blockquote p {
 .site-footer .widget{
 	position: relative;
 	padding-top: 65px;
+}
+.site-footer .widget .logo img{
+	height: 60px;
+    width: 210px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(4490%) hue-rotate(114deg) brightness(121%) contrast(100%);
+}
+.site-footer .widget .logo p{
+	width: 90%;
 }
 .pbmit-footer-widget-area .pbmit-social-links li.pbmit-social-li{
 	margin: 0 17px 5px 0;

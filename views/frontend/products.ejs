@@ -33,8 +33,14 @@
                 <div class="col-md-12 col-xl-9 service-left-col">
                     <div class="container">
                         <div class="pbmit-element-posts-wrapper row">
+                            <% if (products.length === 0) { %>
+                               <div class="no-data">
+                                <h6>No products found!</h6>
+                               </div>
+                                <% } %>
+                                
                             <% if (products && products.length) { %>
-                                <% products.forEach(function(product) { %>
+                                <% products.forEach(function(product, index) { %>
                                     <article class="pbmit-service-style-1 col-md-4">
                                         <div class="pbminfotech-post-item">
                                             <div class="pbmit-box-content-wrap">
@@ -51,8 +57,8 @@
                                                     </h3>
                                                     <div class="buy__now">
                                                         <div class="pbmit-button transform-bottom transform-delay-4">
-                                                            <a class="pbmit-btn pbmit-btn-global" target="_blank"
-                                                                href="https://wa.me/7034327244?text=*PRODUCT%20ENQUIRY*%0A---------------------------%0AProduct%20Name%20:%20<%= encodeURIComponent(product.title) %>%0AQuantity%20:%20222%0AImage%20URL:%20<%= encodeURIComponent(IMAGE_URL+ product.image) %>">
+                                                            <a class="pbmit-btn pbmit-btn-global whatsapp-link-<%= index %>" target="_blank"
+                                                                href="https://wa.me/7034327244?text=*PRODUCT%20ENQUIRY*%0A---------------------------%0AProduct%20Name%20:%20<%= encodeURIComponent(product.title) %>%0AQuantity%20:%201%0AImage%20URL:%20<%= encodeURIComponent(IMAGE_URL+ product.image) %>">
                                                                 <span class="pbmit-button-content-wrapper">
                                                                     <span class="pbmit-button-icon">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -82,19 +88,18 @@
                                                             </a>
                                                         </div>
                                                         <div class="counter">
-                                                            <button id="decrease" disabled><i
-                                                                    class="pbmit-base-icon-angle-left"></i></button>
-                                                            <span id="count">1</span>
-                                                            <button id="increase"><i
-                                                                    class="pbmit-base-icon-angle-right"></i></button>
+                                                            <button class="decrease-btn" data-index="<%= index %>" disabled style="font-size: 14px;">&minus;</button>
+                                                            <span class="count-display" data-index="<%= index %>">1</span>
+                                                            <button class="increase-btn" data-index="<%= index %>"><i
+                                                                    class="pbmit-base-icon-plus"></i></button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </article>
-                                    <% }) %>
-                                        <% } %>
+                                <% }) %>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -131,10 +136,10 @@
                         <aside class="widget pbmit-service-ad">
                             <div class="textwidget">
                                 <div class="pbmit-service-ads">
-                                    <div class="pbmit-ads-call">Call 123 234-567-890</div>
+                                    <div class="pbmit-ads-call">Call +971 56 202 4262</div>
                                     <h4 class="pbmit-ads-subtitle">We Provide</h4>
                                     <h3 class="pbmit-ads-title">Best Services</h3>
-                                    <a class="pbmit-btn pbmit-btn-global" href="#">
+                                    <a class="pbmit-btn pbmit-btn-global" href="/contact">
                                         <span class="pbmit-button-content-wrapper">
                                             <span class="pbmit-button-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="22.76" height="22.76"
@@ -162,29 +167,12 @@
                             <div class="textwidget">
                                 <div class="pbmit-download">
                                     <div class="pbmit-item-download">
-                                        <a href="#" target="_blank" rel="noopener">
+                                        <a href="/assets/brochure.pdf" target="_blank" rel="noopener">
                                             <div class="pbmit-download-content">
                                                 <div class="pbmit-download-wrap">
                                                     <i class="pbmit-base-icon-pdf"></i>
                                                     <div class="pbmit-title-wrap">
-                                                        <h3 class="pbmit-download-title">Document of Business</h3>
-                                                        <span>Brouchers</span>
-                                                    </div>
-                                                </div>
-                                                <span class="pbmit-download-item">
-                                                    <i
-                                                        class="pbminfotech-base-icons pbmit-righticon pbmit-base-icon-download"></i>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="pbmit-item-download">
-                                        <a href="#" target="_blank" rel="noopener">
-                                            <div class="pbmit-download-content">
-                                                <div class="pbmit-download-wrap">
-                                                    <i class="pbmit-base-icon-file"></i>
-                                                    <div class="pbmit-title-wrap">
-                                                        <h3 class="pbmit-download-title">Download Word File</h3>
+                                                        <h3 class="pbmit-download-title">Download PDF File</h3>
                                                         <span>Brouchers</span>
                                                     </div>
                                                 </div>
@@ -205,27 +193,72 @@
     </section>
 
     <script>
-        const decreaseBtn = document.getElementById("decrease");
-        const increaseBtn = document.getElementById("increase");
-        const countDisplay = document.getElementById("count");
-
-        let count = 1; // Initial value set to 1
-
-        increaseBtn.addEventListener("click", () => {
-            count++;
-            countDisplay.textContent = count;
-            decreaseBtn.disabled = count === 1; // Disable only when count is 1
-        });
-
-        decreaseBtn.addEventListener("click", () => {
-            if (count > 1) { // Prevent going below 1
-                count--;
-                countDisplay.textContent = count;
-                decreaseBtn.disabled = count === 1;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all counter elements
+            const decreaseBtns = document.querySelectorAll('.decrease-btn');
+            const increaseBtns = document.querySelectorAll('.increase-btn');
+            const countDisplays = document.querySelectorAll('.count-display');
+            
+            // Store counts for each product
+            const counts = {};
+            
+            // Initialize counts
+            countDisplays.forEach(display => {
+                const index = display.getAttribute('data-index');
+                counts[index] = 1;
+            });
+            
+            // Set up increase button handlers
+            increaseBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = btn.getAttribute('data-index');
+                    counts[index]++;
+                    
+                    // Update display
+                    const display = document.querySelector(`.count-display[data-index="${index}"]`);
+                    display.textContent = counts[index];
+                    
+                    // Enable decrease button
+                    const decreaseBtn = document.querySelector(`.decrease-btn[data-index="${index}"]`);
+                    decreaseBtn.disabled = false;
+                    
+                    // Update WhatsApp link
+                    updateWhatsAppLink(index, counts[index]);
+                });
+            });
+            
+            // Set up decrease button handlers
+            decreaseBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = btn.getAttribute('data-index');
+                    
+                    if (counts[index] > 1) {
+                        counts[index]--;
+                        
+                        // Update display
+                        const display = document.querySelector(`.count-display[data-index="${index}"]`);
+                        display.textContent = counts[index];
+                        
+                        // Disable decrease button if count is 1
+                        btn.disabled = counts[index] === 1;
+                        
+                        // Update WhatsApp link
+                        updateWhatsAppLink(index, counts[index]);
+                    }
+                });
+            });
+            
+            // Function to update WhatsApp link with current count
+            function updateWhatsAppLink(index, count) {
+                const link = document.querySelector(`.whatsapp-link-${index}`);
+                if (link) {
+                    const href = link.getAttribute('href');
+                    // Replace the quantity in the URL
+                    const newHref = href.replace(/Quantity%20:%20\d+/, `Quantity%20:%20${count}`);
+                    link.setAttribute('href', newHref);
+                }
             }
         });
-
-        console.log(count,'count')
-    </script>
+        </script>
 
     <%- include('partials/footer') %>

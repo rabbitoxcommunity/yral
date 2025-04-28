@@ -54,7 +54,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">View Appointments</li>
+                                <li class="breadcrumb-item active" aria-current="page">View Enquiries</li>
                             </ol>
                         </nav>
                     </div>
@@ -63,7 +63,7 @@
                             <div class="col-xl">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">View Appointments</h5>
+                                        <h5 class="card-title">View Enquiries</h5>
                                         <div class="table-responsive">
                                             <table id="zero-conf" class="display" style="width:100%">
                                                 <thead>
@@ -72,8 +72,8 @@
                                                         <th>Last Name</th>
                                                         <th>Email</th>
                                                         <th>Phone Number</th>
-                                                        <th>What services are you interested in?</th>
-                                                        <th>Stage</th>
+                                                        <th>Category</th>
+                                                        <th>Quantity</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -82,10 +82,10 @@
                                                         <% appointments.forEach(appointments=> { %>
                                                             <tr>
                                                                 <td>
-                                                                    <%= appointments.firstName %>
+                                                                    <%= appointments.firstname %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= appointments.lastName %>
+                                                                    <%= appointments.lastname %>
                                                                 </td>
                                                                 <td>
                                                                     <%= appointments.email %>
@@ -94,10 +94,10 @@
                                                                     <%= appointments.phoneNumber %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= appointments.service %>
+                                                                    <%= appointments.category %>
                                                                 </td>
                                                                 <td>
-                                                                    <%= appointments.stage %>
+                                                                    <%= appointments.quantity %>
                                                                 </td>
                                                                 <td class="action">
                                                                     <button data-id="<%= appointments._id %>"
@@ -135,7 +135,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this appointment?
+                Are you sure you want to delete this enquiry?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

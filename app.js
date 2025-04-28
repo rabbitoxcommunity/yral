@@ -41,16 +41,42 @@ app.locals.IMAGE_URL = process.env.IMAGE_URL;
 
 
 // Add a route for your main page
-app.get('/', (req, res) => {
-  res.render('frontend/index');
+app.get('/', async (req, res) => {
+  try {
+    const response = await categoryController.getAllCategories();
+
+    console.log(response)
+
+    // Filter out null or undefined blogs
+    res.render('frontend/index', {
+      categories: response
+    });
+
+  } catch (error) {
+    console.error('Error fetching Categories:', error);
+    res.status(500).render('error', { message: 'Error fetching blogs' });
+  }
 });
 
 app.get('/about', (req, res) => {
   res.render('frontend/about');
 });
 
-app.get('/contact', (req, res) => {
-  res.render('frontend/contact');
+app.get('/contact', async (req, res) => {
+  try {
+    const response = await categoryController.getAllCategories();
+
+    console.log(response)
+
+    // Filter out null or undefined blogs
+    res.render('frontend/contact', {
+      categories: response
+    });
+
+  } catch (error) {
+    console.error('Error fetching Categories:', error);
+    res.status(500).render('error', { message: 'Error fetching blogs' });
+  }
 });
 
 app.get('/products', async (req, res) => {
@@ -94,11 +120,8 @@ app.get('/admin/login', (req, res) => {
 
 app.get('/dashboard', auth, async (req, res) => {
   try {
-    // Fetch the featured blog and the list of other blogs
-    const { list = [], featured = null } = await productController?.getAllProducts();
-
     // Filter out null or undefined blogs
-    const includeFeatured = [featured, ...list].filter(blog => blog !== null && blog !== undefined);
+    const products = await productController.getAllProducts();
 
     // Fetch appointments and ensure you're accessing the appointments array correctly
     const result = await formController.getForm();
@@ -110,7 +133,7 @@ app.get('/dashboard', auth, async (req, res) => {
     console.log(`Appointments array:`, appointments);
 
     res.render('admin/index', {
-      blogs: includeFeatured,
+      products: products,
       appointments: result  // Pass the appointments array to the view
     });
 
@@ -196,7 +219,7 @@ app.get('/manage-product', auth, async (req, res) => {
   }
 });
 
-app.get('/appointments', auth, async (req, res) => {
+app.get('/enquiries', auth, async (req, res) => {
   try {
     // Fetch the featured blog and the list of other blogs
     const appointments = await formController.getForm();

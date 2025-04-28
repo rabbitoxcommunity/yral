@@ -1,0 +1,145 @@
+<form id="contactForm">
+    <div class="pbmit-appointment-form-inner">
+        <div class="pbmit-heading-subheading">
+            <h4 class="pbmit-subtitle">Cost Calculator</h4>
+            <h2 class="pbmit-title">Get your free <br> estimate!</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Your Name" id="firstname" name="firstname" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Your Name" id="lastname" name="lastname" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-md-6">
+                <input name="email" id="email" class="form-control" placeholder="Email Address" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-md-6">
+                <input name="phoneNumber" id="phoneNumber" class="form-control" placeholder="Phone Number" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" name="category" id="category">
+                    <option value="Choose a Service">Choose category</option>
+                    <% categories.forEach(function(cat) { %>
+                        <option value="<%= cat.title %>"><%= cat.title %></option>
+                    <% }) %>
+                
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-md-6">
+                <input type="number" class="form-control" placeholder="Total quantity" name="quantity" id="quantity" required>
+            </div>
+        </div>
+    </div>
+    <div class="input-button">
+        <button class="pbmit-btn">
+            <span class="pbmit-button-content-wrapper">
+                <span class="pbmit-button-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22.76" height="22.76" viewBox="0 0 22.76 22.76">
+                        <title>black-arrow</title>
+                        <path d="M22.34,1A14.67,14.67,0,0,1,12,5.3,14.6,14.6,0,0,1,6.08,4.06,14.68,14.68,0,0,1,1.59,1" transform="translate(-0.29 -0.29)" fill="none" stroke="#000" stroke-width="2"></path>
+                        <path d="M22.34,1a14.67,14.67,0,0,0,0,20.75" transform="translate(-0.29 -0.29)" fill="none" stroke="#000" stroke-width="2"></path>
+                        <path d="M22.34,1,1,22.34" transform="translate(-0.29 -0.29)" fill="none" stroke="#000" stroke-width="2"></path>
+                    </svg>
+                </span>
+                <span class="pbmit-button-text">Get Cost Estimate</span>
+            </span>
+        </button>
+    </div>
+</form>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myBtn").click(function () {
+            $("#myToast").toast("show");
+        });
+    });
+</script>
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = this;
+
+        function validateField(id, message) {
+            const field = document.getElementById(id);
+            if (!field) return false;
+
+            const isValid = field.value.trim() !== '' && !(field.tagName === 'SELECT' && field.value === 'Choose a Service');
+            const errorEl = field.nextElementSibling;
+
+            field.classList.toggle('is-invalid', !isValid);
+            if (errorEl) errorEl.textContent = isValid ? '' : message;
+
+            return isValid;
+        }
+
+        function validateEmailField(id, message) {
+            const email = document.getElementById(id);
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+            const errorEl = email.nextElementSibling;
+
+            email.classList.toggle('is-invalid', !isValid);
+            if (errorEl) errorEl.textContent = isValid ? '' : message;
+
+            return isValid;
+        }
+
+        const validations = [
+            validateField('firstname', 'Please enter your first name.'),
+            validateField('lastname', 'Please enter your last name.'),
+            validateEmailField('email', 'Please enter a valid email address.'),
+            validateField('phoneNumber', 'Please enter your phone number.'),
+            validateField('category', 'Please select a category.'),
+            validateField('quantity', 'Please enter the quantity.')
+        ];
+
+        if (validations.includes(false)) {
+            console.log('Validation failed');
+            return;
+        }
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch('/api/form/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (res.ok){
+                Toastify({
+                        text: "Your enquiry has been submitted successfully.<br>We’ll get back to you shortly.",
+                        duration: 3000,
+                        newWindow: true,
+                        position: "center",
+                        gravity: "bottom",
+                        positionRight: true,
+                        backgroundColor: "#63b445",
+                        escapeMarkup: false ,
+                        className: "toast-center"
+                    }).showToast();
+            }
+            else throw new Error('Submission failed');
+        })
+        .catch(err => {
+            console.error('Submission error:', err);
+        });
+    });
+</script>
+<style>
+    .toast-center {
+        text-align: center;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    </style>
+    
