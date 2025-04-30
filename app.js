@@ -127,7 +127,7 @@ app.get('/dashboard', auth, async (req, res) => {
     const result = await formController.getForm();
 
 
-    const appointments = result?.appointments || [];  // Access the appointments array from the returned object
+    const appointments = result && result.appointments ? result.appointments : [];  // Access the appointments array from the returned object
 
     // Log the appointments array
     console.log(`Appointments array:`, appointments);
