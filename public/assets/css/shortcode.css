@@ -3106,6 +3106,7 @@ body.rtl .pbmit-blog-style-3 .pbmit-blog-btn-wrap {
 	width: 70px;
 	height: 70px;
 	border-radius: 100%;
+	object-fit: cover;
 }
 .pbmit-testimonial-style-1 .pbminfotech-box-author{
 	display: inline-flex;
@@ -3154,6 +3155,7 @@ body.rtl .pbmit-blog-style-3 .pbmit-blog-btn-wrap {
 	width: 70px;
 	height: 70px;
 	border-radius: 100%;
+	object-fit: cover;
 }
 .pbmit-testimonial-style-2 .pbmit-featured-wrapper {
 	border-radius: 50px 50px 0 0px;
@@ -3969,7 +3971,7 @@ blockquote p {
     bottom: 0;
 	z-index: -1;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
     background-size: cover;
 }
 .pbmit-slider-area .swiper-slider{
